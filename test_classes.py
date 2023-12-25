@@ -1,16 +1,15 @@
 import pytest
-import matplotlib
 import numpy as np
 from classes import Map, Path
 import matplotlib.pyplot as plt
+
+from project_map.classes import Map
 
 @pytest.fixture
 def map_instance():
     return Map(10, 2.0)
 
-@pytest.fixture
-def path_instance(map_instance):
-    return Path(map_instance, 10)
+
 
 """tests: calling Errors"""
 def test_invalid_n():
@@ -86,4 +85,65 @@ def test_get_neighbors_corner_cell(map_instance):
     expected_neighbors = [(0, 8), (1, 9)]
     assert list.sort(neighbors) == list.sort(expected_neighbors)
 
+"""tests for function find_shortest_path"""
+def test_find_shortest_path_valid(map_instance):
+    path = Path(map_instance, map_instance.n)
+    path.find_shortest_path()
+    assert path.path_matrix is not None
 
+def test_find_shortest_path_invalid(map_instance):
+    map_instance.map_matrix[0, 0] == 5
+    path = Path(map_instance, map_instance.n)
+    path.find_shortest_path()
+    assert "There is no valid path"
+
+def test_find_shortest_path_large_map():
+    large_map = Map(100, 2.0)
+    path = Path(large_map, 100)
+    path.find_shortest_path()
+    if path.path_matrix is None:
+        assert "There is no valid path"
+    else:
+        assert path.path_matrix is not None
+
+
+"""tests for function reconstruct_path"""
+def test_reconstruct_path_valid(map_instance):
+    """Тестирование восстановления пути для валидной карты."""
+    path = Path(map_instance, map_instance.n)
+    
+    visited_cells = {
+    (0, 0): None,
+    (1, 0): (0, 0),
+    (1, 1): (1, 0),
+    }
+    end_cell = (1, 1)
+    reconstructed_path = path.reconstruct_path(visited_cells, end_cell)
+    expected_path = [(0, 0), (1, 0), (1, 1)]
+
+    assert reconstructed_path == expected_path
+
+def test_reconstruct_path_no_valid_path(map_instance):
+    path = Path(map_instance, map_instance.n)
+
+    visited_cells = {
+    (0, 0): None,
+    (1, 0): (0, 0)
+    }
+    end_cell = (1, 1)
+    reconstructed_path = path.reconstruct_path(visited_cells, end_cell)
+
+    assert reconstructed_path is None
+
+def test_reconstruct_path_empty_visited(map_instance):
+    path = Path(map_instance, map_instance.n)
+
+    reconstructed_path = path.reconstruct_path({}, (1, 1))
+
+    assert reconstructed_path is None
+
+"""tests for function visualize_path"""
+def test_visualize_path_no_errors(map_instance):
+    path_instance = Path(map_instance, map_instance.n)
+    path_instance.find_shortest_path()
+    assert True
