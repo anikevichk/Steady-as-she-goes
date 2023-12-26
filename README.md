@@ -1,12 +1,12 @@
-#Documentation for project 'Steady as she goes!'
+# Documentation for project 'Steady as she goes!'
 
 **Author:** Katsyaryna Anikevich  
 **Group:** 105, PIPR23Z
 
-##Project Objective:
+## Project Objective:
 To develop a program to plan shortest ship routes in shallow water areas using a graphical interface.
 
-##Project Description:
+## Project Description:
 The project is a GUI program designed to visualize and plan the shortest route of a ship through a water area, taking into account the depth of the terrain and the draft of the ship. 
 
 Through the interface, the user creates a map of size NxN, specifying the size of the map as well as the draft of their ship.
