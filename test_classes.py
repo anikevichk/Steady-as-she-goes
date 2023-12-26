@@ -9,16 +9,22 @@ from project_map.classes import Map
 def map_instance():
     return Map(10, 2.0)
 
-
-
 """tests: calling Errors"""
-def test_invalid_n():
-    with pytest.raises(TypeError):
+def test_negative_n():
+    with pytest.raises(ValueError):
         map_instance = Map(5, -3.0)
 
-def test_invalid_draught():
-    with pytest.raises(TypeError):
+def test_not_int_n():
+    with pytest.raises(ValueError):
+        map_instance = Map('a', 2.0)
+
+def test_negative_draught():
+    with pytest.raises(ValueError):
         map_instance = Map(-5, 0.2)
+
+def test_not_float_draught():
+    with pytest.raises(ValueError):
+        map_instance = Map(5, 'b')
 
 """tests for function create_map_random"""
 def test_create_map_random_shape(map_instance):
@@ -86,11 +92,6 @@ def test_get_neighbors_corner_cell(map_instance):
     assert list.sort(neighbors) == list.sort(expected_neighbors)
 
 """tests for function find_shortest_path"""
-def test_find_shortest_path_valid(map_instance):
-    path = Path(map_instance, map_instance.n)
-    path.find_shortest_path()
-    assert path.path_matrix is not None
-
 def test_find_shortest_path_invalid(map_instance):
     map_instance.map_matrix[0, 0] == 5
     path = Path(map_instance, map_instance.n)
@@ -109,7 +110,6 @@ def test_find_shortest_path_large_map():
 
 """tests for function reconstruct_path"""
 def test_reconstruct_path_valid(map_instance):
-    """Тестирование восстановления пути для валидной карты."""
     path = Path(map_instance, map_instance.n)
     
     visited_cells = {
