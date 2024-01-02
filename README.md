@@ -45,7 +45,7 @@ pip install numpy matplotlib
     - The program will generate a random map based on the specified size and draft.
     - The map will be displayed using Matplotlib.
 
-4. ** Shortest Path Calculation:**
+4. **Shortest Path Calculation:**
     - The program will calculate the shortest path using the last path algorithm.
     - The specified path will be visualized on the map.
 
