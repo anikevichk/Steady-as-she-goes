@@ -1,17 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-from matplotlib.widgets import Button
 from collections import deque
 
 class Map:
     def __init__(self, n, draught):
         self.n = n
-        if n <= 0 or type(n) != int:
-            raise TypeError('N should be a positive number')
+        if type(n) != int:
+            raise ValueError('N should be an integer')
+        elif n <= 0:
+            raise ValueError('N should be a positive number')
         self.draught = draught
-        if draught <= 0 or type(draught) != float:
-            raise TypeError('Draught should be a positive number')
+        if type(draught) != float:
+            raise ValueError('Draught should be a float')       
+        elif draught <= 0:
+            raise ValueError('Draught should be a positive number')
         self.map_matrix = self.create_map_random()
 
     def create_map_random(self):
@@ -89,13 +92,9 @@ class Path:
             path.append(current_cell)
             current_cell = visited[current_cell]
 
-        path.reverse()
         return path
 
     def visualize_path(self):
-        if self.path_matrix is None:
-            return
-
         x_coords, y_coords = zip(*self.path_matrix)
 
         self.map_obj.plot_map()
