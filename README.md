@@ -30,8 +30,12 @@ The `Path` class represents a path-finding algorithm applied to a given map obje
 Ensure that you have Python installed on your system. The project relies on the following libraries, which can be installed using the following command:
 
 ```bash
-pip install numpy matplotlib
+pip install numpy
 ```
+```bash
+pip install matplotlib
+```
+
 ### Usage
 
 1. **Start the program:**
