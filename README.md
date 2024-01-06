@@ -18,10 +18,10 @@ The program interface is implemented using the NumPy library for data processing
 ## Classes
 
 ### Class `Map`
-The `Map` class represents a two-dimensional map with given dimensions (`n`) and given draught value. The map is initialized with random values based on a predefined probability distribution. The class provides methods for visualizing the map (`plot_map`), checking cell validity (`is_valid_cell`), and getting valid neighboring cells with their matching values (`get_neighbors`). In addition, the class provides for checking the input of parameters (`n` and `draught`) during initialization.
+The `Map` class represents a two-dimensional map with given dimensions (`map_size`) and given draught value. The map is initialized with random values or manually inputed parameters based on a predefined probability distribution. The class provides methods for visualizing the map (`plot_map`), checking cell validity (`is_valid_cell`), and getting valid neighboring cells with their matching values (`get_neighbors`). In addition, the class provides for checking the input of parameters (`n` and `draught`) during initialization.
 
 ### Class `Path`
-The `Path` class represents a path-finding algorithm applied to a given map object. The class is initialized with a map object (`map_obj`) and a map size (`n`). It includes a method (`find_shortest_path`) that uses a width search algorithm to find the shortest path from the top left corner to the bottom right corner of the map. Then the path is regenerated and stored in the `path_matrix` attribute. The class also provides a method (`visualize_path`) to visualize the map along with the discovered path.
+The `Path` class represents a path-finding algorithm applied to a given map object. The class is initialized with a map object (`map_obj`) and a map size (`map_size`). It includes a method (`find_paths`) that uses a width search algorithm to find two minimum length paths from the top left corner to the bottom right corner of the map. Then the path is regenerated and stored in the `path_matrix` attribute. The class also provides a method (`visualize_path`) to visualize the map along with the discovered path.
 
 ## User Guide
 
@@ -37,20 +37,21 @@ pip install numpy matplotlib
 1. **Start the program:**
     Open your Python environment and run the script "main.py".
 
-2. **Enter the size and draught:**
-    - Enter the desired field size (N) when prompted.
+2. **Enter map creation way, the size and draught:**
+    - Enter map creation way (manual or automatic)
+    - Enter the desired field size (map_size) when prompted.
     - Enter the ship's draught in meters when prompted.
 
 3. **Visualization:**
-    - The program will generate a random map based on the specified size and draft.
+    - The program will generate map based on the specified size and draft.
     - The map will be displayed using Matplotlib.
 
 4. **Shortest Path Calculation:**
-    - The program will calculate the shortest path using the last path algorithm.
+    - The program will calculate ttwo minimum length paths using the BFS algorithm.
     - The specified path will be visualized on the map.
 
 5. **View the result:**
-    - Explore the displayed map to find the optimal path from the top left corner to the bottom right corner.
+    - Explore the displayed map to find the optimal paths from the top left corner to the bottom right corner.
 
 ## Reflexive part 
 
