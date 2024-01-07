@@ -1,4 +1,3 @@
-import json
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
@@ -6,12 +5,13 @@ import matplotlib.colors as mcolors
 # Define a class for creating and visualizing a map
 class Map:
     def __init__(self, map_size, draught, choice, path = None):
-        self.map_size = map_size
         if map_size <= 0:
-            raise ValueError('N should be a positive number')
-        self.draught = draught   
+            raise ValueError('N should be a positive number')  
         if draught <= 0:
-            raise ValueError('Draught should be a positive number')
+            raise ValueError('Draught should be a positive number')  
+        
+        self.map_size = map_size
+        self.draught = draught   
         self.choice = choice
         self.path = path
 
@@ -21,14 +21,17 @@ class Map:
         elif choice == 'a':
             self.map_matrix = self.create_map_random()
         elif choice == 'f':
-            self.map_matrix = self.create_map_from_file()
+            self.map_matrix = self.create_map_from_file(self.path)
         else:
-            raise ValueError('Invalid choice. You can enter m for manual or a for automatic creation')
+            raise ValueError('Invalid choice. You can enter m for manual, a for automatic or f for file creation.')
 
     def create_map_random(self):
-        map_matrix = np.random.choice([-(self.draught*2), 1-self.draught, 1, 10], size=(self.map_size, self.map_size), p=[0.80, 0.05, 0.10, 0.05])
+        probabilities = [0.75, 0.10, 0.10, 0.05]
+        elevations = [-(self.draught * 2), 1 - self.draught, 1, 10]
+
+        map_matrix = np.random.choice(elevations, size=(self.map_size, self.map_size), p=probabilities)
         map_matrix[0, 0] = -self.draught*2
-        map_matrix[self.map_size-1, self.map_size-1] = -self.draught*2
+        map_matrix[-1, -1] = -self.draught*2
 
         return map_matrix
     
@@ -36,13 +39,17 @@ class Map:
         map_matrix = np.zeros((self.map_size, self.map_size))
         for row in range(self.map_size):
             for column in range(self.map_size):
-                map_matrix[row, column] = float(input(f"Enter the elevation at position ({row + 1},{column + 1}): "))
+                try:
+                    map_matrix[row, column] = float(input(f"Enter the elevation at position ({row + 1},{column + 1}): "))
+                except ValueError:
+                    raise ValueError("Invalid input. Please enter a valid numeric elevation.")
                 
         return map_matrix 
     
-    def create_map_from_file(self):
-        path = 'C:\project\project_map\example.txt'
-        map_matrix = np.loadtxt(path)
+    def create_map_from_file(self, path):
+        if not path:
+            raise ValueError("File path is not provided.")
+        map_matrix = np.loadtxt(self.path, skiprows = 1)
         if map_matrix.shape != (self.map_size, self.map_size):
             raise ValueError(f"Invalid map dimensions. Expected ({self.map_size}, {self.map_size}).")
         return map_matrix 
@@ -55,8 +62,8 @@ class Map:
         plt.colorbar(ticks=bounds)
 
     def plot_map_with_title(self):
-        map = self.plot_map()
-        plt.title(r'To see the path, close this window')
+        self.plot_map()
+        plt.title('To see the path, close this window')
 
     # Check if a given cell is within the map boundaries and has a valid elevation for the ship to enter
     def is_valid_cell(self, row, column):
